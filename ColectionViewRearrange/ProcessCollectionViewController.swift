@@ -170,3 +170,21 @@ extension String {
         } else {return ""}
     }
 }
+
+
+//MARK: one little trick from http://nshint.io/blog/2015/07/16/uicollectionviews-now-have-easy-reordering/, that doesn't work for UICollectionViewFlowLayout. Or I do something wrong
+
+extension UICollectionViewFlowLayout {
+    
+    override open func invalidationContext(forInteractivelyMovingItems targetIndexPaths: [IndexPath], withTargetPosition targetPosition: CGPoint, previousIndexPaths: [IndexPath], previousPosition: CGPoint) -> UICollectionViewLayoutInvalidationContext {
+        
+        let context = super.invalidationContext(forInteractivelyMovingItems: targetIndexPaths, withTargetPosition: targetPosition, previousIndexPaths: previousIndexPaths, previousPosition: previousPosition)
+        
+        collectionView?.moveItem(at: previousIndexPaths[0], to: targetIndexPaths[0])
+        
+        //(self.collectionView!, moveItemAt: previousIndexPaths[0], to: targetIndexPaths[0])
+        
+        return context
+    }
+}
+
